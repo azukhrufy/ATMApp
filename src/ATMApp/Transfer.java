@@ -1,12 +1,19 @@
 package ATMApp;
+
+import ATMApp.controller.Transaction;
+import ATMApp.controller.BankDatabase;
+
 public class Transfer extends Transaction {
    private double amount; // amount to deposit
    private Keypad keypad; // reference to keypad
    private boolean userAuthenticated = false;
    private final static int CANCELED = 0; // constant for cancel option
+   
     public Transfer(int userAccountNumber, Screen atmScreen, BankDatabase atmBankDatabase,Keypad atmKeypad,int AccountNumberTujuan) {
         super(userAccountNumber, atmScreen, atmBankDatabase);
       keypad = atmKeypad;}
+    
+    
    @Override
    public void execute() {
        amount = TransferAmount();

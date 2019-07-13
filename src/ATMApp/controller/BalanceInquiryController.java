@@ -3,18 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ATMApp;
+package ATMApp.controller;
+
+import ATMApp.Screen;
+import ATMApp.view.BalanceInquiryView;
 
 /**
  *
  * @author Azukhrufy
  */
-public class BalanceInquiry extends Transaction {
+public class BalanceInquiryController extends Transaction {
+    BalanceInquiryView view;
    // BalanceInquiry constructor
-   public BalanceInquiry(int userAccountNumber, Screen atmScreen, 
+   public BalanceInquiryController(int userAccountNumber, Screen atmScreen, 
       BankDatabase atmBankDatabase) {
 
       super(userAccountNumber, atmScreen, atmBankDatabase);
+      view = new BalanceInquiryView();
    } 
 
    // performs the transaction
@@ -33,11 +38,10 @@ public class BalanceInquiry extends Transaction {
          bankDatabase.getTotalBalance(getAccountNumber());
       
       // display the balance information on the screen
-      screen.displayMessageLine("\nBalance Information:");
-      screen.displayMessage(" - Available balance: "); 
+      view.displayBalanceInquiry("available");
       screen.displayDollarAmount(availableBalance);
-      screen.displayMessage("\n - Total balance:     ");
+      view.displayBalanceInquiry("total");
       screen.displayDollarAmount(totalBalance);
-      screen.displayMessageLine("");
+      
    }
 } 

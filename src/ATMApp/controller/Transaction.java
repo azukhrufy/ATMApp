@@ -1,8 +1,12 @@
-package ATMApp;
+package ATMApp.controller;
+
+import ATMApp.Screen;
+import ATMApp.controller.BankDatabase;
+
 public abstract class Transaction {
    int accountNumber; // indicates account involved
-   Screen screen; // ATM screen
-   BankDatabase bankDatabase; // account database 
+   public Screen screen; // ATM screen
+   public BankDatabase bankDatabase; // account database 
    public Transaction(int userAccountNumber, Screen atmScreen, 
       BankDatabase atmBankDatabase) {
 

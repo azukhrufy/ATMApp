@@ -3,14 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ATMApp;
+package ATMApp.controller;
 
 /**
  *
  * @author Azukhrufy
  */
-public class ATM {
-   private boolean userAuthenticated; // whether user is authenticated
+import ATMApp.model.CashDispenser;
+import ATMApp.DepositSlot;
+import ATMApp.Keypad;
+import ATMApp.Screen;
+import ATMApp.Transfer;
+import ATMApp.view.ATMView;
+
+
+public class ATMController {
+    private boolean userAuthenticated; // whether user is authenticated
    private int currentAccountNumber; // current user's account number
    private Screen screen; // ATM's screen
    private Keypad keypad; // ATM's keypad
@@ -18,83 +26,59 @@ public class ATM {
    private DepositSlot depositSlot;
    private int AccountNumberTujuan;
    private BankDatabase bankDatabase; // account information database
-
+   private ATMView view;
+   
    // constants corresponding to main menu options
    private static final int BALANCE_INQUIRY = 1;
    private static final int WITHDRAWAL = 2;
    private static final int DEPOSIT = 3;
    private static final int TRANSFER = 4;
    private static final int EXIT = 5;
-
-   // no-argument ATM constructor initializes instance variables
-   public ATM() {
+   
+   public ATMController(){
       userAuthenticated = false; // user is not authenticated to start
       currentAccountNumber = 1; // no current account number to start
       screen = new Screen(); // create screen
       keypad = new Keypad(); // create keypad 
       cashDispenser = new CashDispenser(); // create cash dispenser
       bankDatabase = new BankDatabase(); // create acct info database
+      view = new ATMView();
    }
-
-   // start ATM 
-   public void run() {
+    
+    public void run() {
       // welcome and authenticate user; perform transactions
       while (true) {
          // loop while user is not yet authenticated
          while (!userAuthenticated) {
-            screen.displayMessageLine("\nWelcome!");       
+            view.displayMessage("welcome");
             authenticateUser(); // authenticate user
          }
          
          performTransactions(); // user is now authenticated
          userAuthenticated = false; // reset before next ATM session
          currentAccountNumber = 0; // reset before next ATM session
-         screen.displayMessageLine("\nThank you! Goodbye!");
+         view.displayMessage("goodbye");
       }
    }
-   
-   public void run2(){
-       searchUser();
-   }
-
-   // attempts to authenticate user against database
-   private void authenticateUser() {
-      screen.displayMessage("\nPlease enter your account number: ");
+    
+    private void authenticateUser() {
+      view.displayMessage("accnumber");
       int accountNumber = keypad.getInput(); // input account number
-      screen.displayMessage("\nEnter your PIN: "); // prompt for PIN
+      view.displayMessage("pin");
       int pin = keypad.getInput(); // input PIN
-      
       // set userAuthenticated to boolean value returned by database
       userAuthenticated = 
          bankDatabase.authenticateUser(accountNumber, pin);
-      
       // check whether authentication succeeded
       if (userAuthenticated) {
          currentAccountNumber = accountNumber; // save user's account #
       } 
       else {
-         screen.displayMessageLine(
-            "Invalid account number or PIN. Please try again.");
+         view.displayMessage("invalid");
       } 
    } 
-   
-   private void searchUser(){
-       screen.displayMessage("\nPlease enter account number Tujuan: ");
-      int accountNumber = keypad.getInput();
-      
-      userAuthenticated = 
-         bankDatabase.hasilSearchAccount(accountNumber);
-      if(userAuthenticated){
-          screen.displayMessageLine(
-            "Account Ditemukan.");
-      }else{
-          screen.displayMessageLine(
-            "Account Tidak Ditemukan.");
-      }
-   }
-
-   // display the main menu and perform transactions
-   private void performTransactions() {
+    
+    private void performTransactions() {
       // local variable to store transaction currently being processed
       Transaction currentTransaction = null;
       
@@ -103,7 +87,7 @@ public class ATM {
       // loop while user has not chosen option to exit system
       while (!userExited) {
          // show main menu and get user selection
-         int mainMenuSelection = displayMainMenu();
+         int mainMenuSelection = MainMenu();
 
          // decide how to proceed based on user's menu selection
          switch (mainMenuSelection) {
@@ -142,35 +126,27 @@ public class ATM {
                currentTransaction.execute();
             break;
             case EXIT: // user chose to terminate session
-               screen.displayMessageLine("\nExiting the system...");
+                view.displayMessage("exit");
                userExited = true; // this ATM session should end
                break;
             default: // 
-               screen.displayMessageLine(
-                  "\nYou did not enter a valid selection. Try again.");
+               view.displayMessage("ulangi");
                break;
          }
       } 
    } 
-
-   // display the main menu and return an input selection
-   private int displayMainMenu() {
-      screen.displayMessageLine("\nMain menu:");
-      screen.displayMessageLine("1 - View my balance");
-      screen.displayMessageLine("2 - Withdraw cash");
-      screen.displayMessageLine("3 - Deposit funds");
-      screen.displayMessageLine("4 - Transfer");
-      screen.displayMessageLine("5 - Exit\n");
-      screen.displayMessage("Enter a choice: ");
+    
+    private int MainMenu() {
+      view.displayMainMenu();
       return keypad.getInput(); // return user's selection
    } 
-         
-   private Transaction createTransaction(int type) {
+    
+    private Transaction createTransaction(int type) {
       Transaction temp = null; 
           
       switch (type) {
          case BALANCE_INQUIRY: 
-            temp = new BalanceInquiry(
+            temp = new BalanceInquiryController(
                currentAccountNumber, screen, bankDatabase);
             break;
          //langkah 4 

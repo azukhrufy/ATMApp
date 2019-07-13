@@ -5,6 +5,9 @@
  */
 package ATMApp;
 
+import ATMApp.controller.ATMController;
+import ATMApp.view.ATMView;
+
 /**
  *
  * @author Azukhrufy
@@ -12,7 +15,7 @@ package ATMApp;
 public class ATMApp {
    // main method creates and runs the ATM
    public static void main(String[] args) {
-      ATM theATM = new ATM();    
+      ATMController theATM = new ATMController();    
       theATM.run();
    }
 }

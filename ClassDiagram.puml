@@ -1,0 +1,68 @@
+@startuml
+abstract class ATMApp.controller.Transaction
+annotation java.lang.Override
+class ATMApp.ATMApp
+class ATMApp.DepositSlot
+class ATMApp.Keypad
+class ATMApp.Screen
+class ATMApp.Transfer
+class ATMApp.controller.ATMController
+class ATMApp.controller.BalanceInquiryController
+class ATMApp.controller.BankDatabase
+class ATMApp.controller.Deposit
+class ATMApp.controller.Withdrawal
+class ATMApp.model.Account
+class ATMApp.model.CashDispenser
+class ATMApp.view.ATMView
+class ATMApp.view.BalanceInquiryView
+class ATMApp.view.DepositView
+class ATMApp.view.WithdrawalView
+class java.util.Scanner
+ATMApp.controller.Transaction ..> ATMApp.Screen
+ATMApp.controller.Transaction ..> ATMApp.controller.BankDatabase
+ATMApp.ATMApp ..> ATMApp.controller.ATMController
+ATMApp.ATMApp ..> ATMApp.view.ATMView
+ATMApp.Keypad ..> java.util.Scanner
+ATMApp.Transfer --|> ATMApp.controller.Transaction
+ATMApp.Transfer ..> java.lang.Override
+ATMApp.Transfer ..> ATMApp.controller.BankDatabase
+ATMApp.controller.ATMController ..> ATMApp.DepositSlot
+ATMApp.controller.ATMController ..> ATMApp.Keypad
+ATMApp.controller.ATMController ..> ATMApp.Screen
+ATMApp.controller.ATMController ..> ATMApp.Transfer
+ATMApp.controller.ATMController ..> ATMApp.model.CashDispenser
+ATMApp.controller.ATMController ..> ATMApp.view.ATMView
+ATMApp.controller.BalanceInquiryController --|> ATMApp.controller.Transaction
+ATMApp.controller.BalanceInquiryController ..> java.lang.Override
+ATMApp.controller.BalanceInquiryController ..> ATMApp.Screen
+ATMApp.controller.BalanceInquiryController ..> ATMApp.view.BalanceInquiryView
+ATMApp.controller.BankDatabase ..> ATMApp.model.Account
+ATMApp.controller.Deposit --|> ATMApp.controller.Transaction
+ATMApp.controller.Deposit ..> java.lang.Override
+ATMApp.controller.Deposit ..> ATMApp.DepositSlot
+ATMApp.controller.Deposit ..> ATMApp.Keypad
+ATMApp.controller.Deposit ..> ATMApp.Screen
+ATMApp.controller.Deposit ..> ATMApp.controller.BankDatabase
+ATMApp.controller.Deposit ..> ATMApp.view.DepositView
+ATMApp.controller.Withdrawal --|> ATMApp.controller.Transaction
+ATMApp.controller.Withdrawal ..> java.lang.Override
+ATMApp.controller.Withdrawal ..> ATMApp.Keypad
+ATMApp.controller.Withdrawal ..> ATMApp.Screen
+ATMApp.controller.Withdrawal ..> ATMApp.controller.BankDatabase
+ATMApp.controller.Withdrawal ..> ATMApp.model.CashDispenser
+ATMApp.controller.Withdrawal ..> ATMApp.view.WithdrawalView
+ATMApp.view.ATMView ..> ATMApp.controller.Transaction
+ATMApp.view.ATMView ..> ATMApp.DepositSlot
+ATMApp.view.ATMView ..> ATMApp.Keypad
+ATMApp.view.ATMView ..> ATMApp.Screen
+ATMApp.view.ATMView ..> ATMApp.Transfer
+ATMApp.view.ATMView ..> ATMApp.controller.BalanceInquiryController
+ATMApp.view.ATMView ..> ATMApp.controller.BankDatabase
+ATMApp.view.ATMView ..> ATMApp.controller.Deposit
+ATMApp.view.ATMView ..> ATMApp.controller.Withdrawal
+ATMApp.view.ATMView ..> ATMApp.model.CashDispenser
+ATMApp.view.BalanceInquiryView ..> ATMApp.Screen
+ATMApp.view.BalanceInquiryView ..> ATMApp.controller.BalanceInquiryController
+ATMApp.view.DepositView ..> ATMApp.Screen
+ATMApp.view.WithdrawalView ..> ATMApp.Screen
+@enduml

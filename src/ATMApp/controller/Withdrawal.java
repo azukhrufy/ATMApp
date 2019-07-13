@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ATMApp;
+package ATMApp.controller;
+
+import ATMApp.Keypad;
+import ATMApp.Screen;
+import ATMApp.controller.BankDatabase;
+import ATMApp.model.CashDispenser;
+import ATMApp.view.WithdrawalView;
 
 /**
  *
@@ -13,6 +19,7 @@ public class Withdrawal extends Transaction {
    private int amount; // amount to withdraw
    private Keypad keypad; // reference to keypad
    private CashDispenser cashDispenser; // reference to cash dispenser
+   private WithdrawalView view;
    
 
    // constant corresponding to menu option to cancel
@@ -27,6 +34,7 @@ public class Withdrawal extends Transaction {
       super(userAccountNumber, atmScreen, atmBankDatabase);
       keypad = atmKeypad;
       cashDispenser = atmCashDispenser;
+      view = new WithdrawalView();
       
    }
 
@@ -39,7 +47,7 @@ public class Withdrawal extends Transaction {
        //System.out.println(amount);
       
        if(amount == CANCELED){
-           screen.displayMessageLine("Canceling transaction...");
+           view.display("cancel");
        }
        else{
            if(cashDispenser.isSufficientCashAvailable(amount)){
@@ -48,8 +56,7 @@ public class Withdrawal extends Transaction {
                    super.getBankDatabase().debit(super.getAccountNumber(), amount);
                }
            }
-            screen.displayMessageLine("Your cash has been dispensed.");
-            screen.displayMessageLine("Please take your cash now.");
+           view.display("success");
        }
    } 
 
@@ -63,18 +70,11 @@ public class Withdrawal extends Transaction {
       // array of amounts to correspond to menu numbers
       int[] amounts = {0, 20, 40, 60, 100, 200};
 
+      
       // loop while no valid choice has been made
       while (userChoice == 0) {
          // display the withdrawal menu
-         screen.displayMessageLine("\nWithdrawal Menu:");
-         screen.displayMessageLine("1 - $20");
-         screen.displayMessageLine("2 - $40");
-         screen.displayMessageLine("3 - $60");
-         screen.displayMessageLine("4 - $100");
-         screen.displayMessageLine("5 - $200");
-         screen.displayMessageLine("6 - Cancel transaction");
-         screen.displayMessage("\nChoose a withdrawal amount: ");
-
+         view.displayMenu();
          int input = keypad.getInput(); // get user input through keypad
 
          // determine how to proceed based on the input value

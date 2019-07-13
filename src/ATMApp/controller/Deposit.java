@@ -3,7 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ATMApp;
+package ATMApp.controller;
+
+import ATMApp.DepositSlot;
+import ATMApp.Keypad;
+import ATMApp.Screen;
+import ATMApp.controller.BankDatabase;
+import ATMApp.view.DepositView;
 
 /**
  *
@@ -14,6 +20,7 @@ public class Deposit extends Transaction {
    private Keypad keypad; // reference to keypad
    private DepositSlot depositSlot; // reference to deposit slot
    private final static int CANCELED = 0; // constant for cancel option
+   private DepositView view;
 
    // Deposit constructor
    public Deposit(int userAccountNumber, Screen atmScreen, 
@@ -24,6 +31,7 @@ public class Deposit extends Transaction {
       super(userAccountNumber, atmScreen, atmBankDatabase);
       keypad = atmKeypad;
       depositSlot = atmDepositSlot;
+      view = new DepositView();
 
    } 
 
@@ -33,11 +41,12 @@ public class Deposit extends Transaction {
        amount = promptForDepositAmount();
        
        if(amount == CANCELED){
-           screen.displayMessage("Canceling transaction...");
+           view.displayMessage("cancel");
+           
        }
        else{
            super.getBankDatabase().credit(super.getAccountNumber(), amount);
-           screen.displayMessage("Please insert a deposit envelope containing");
+           view.displayMessage("insert");
            super.getScreen().displayDollarAmount(amount);
            screen.displayMessage("Your envelope has been received.\n" +
                    "\n" +"NOTE: The money just deposited will not be available until "
@@ -51,8 +60,7 @@ public class Deposit extends Transaction {
       Screen screen = getScreen(); // get reference to screen
 
       // display the prompt
-      screen.displayMessage("\nPlease enter a deposit amount in " + 
-         "CENTS (or 0 to cancel): ");
+      view.displayMessage("masukuang");
       int input = keypad.getInput(); // receive input of deposit amount
       
       // check whether the user canceled or entered a valid amount
